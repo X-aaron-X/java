@@ -16,6 +16,12 @@ public class MatricesBidimensionales {
             }
         }
         
+        // Imprimo la matriz bidimensional de golpe con el meto deepToString
         System.out.println(Arrays.deepToString(numeritos));
+        
+        // Recorro las "Filas" y las voy imprimiendo una a una con el metodo toString
+        for (int[] numerito : numeritos) {
+            System.out.println(Arrays.toString(numerito));
+        }
     }
 }
