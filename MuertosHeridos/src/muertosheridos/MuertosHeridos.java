@@ -17,7 +17,7 @@ public class MuertosHeridos {
     // Si el jugador introduce "claudico", mostraremos la solución.
     public static void main(String[] args) {
         int[] clave = generarClave();
-        int muertos = 0, heridos;
+        int muertos, heridos;
         
         String texto;
         boolean claudico = false;
@@ -45,8 +45,9 @@ public class MuertosHeridos {
                     else {
                         muertos = contarMuertos(clave, stringAdivinar);
                         heridos = contarHeridos(clave, stringAdivinar);
-
-                        System.out.println("\nMuertos: " + muertos);
+                        
+                        System.out.println("\nNumero: " + texto);
+                        System.out.println("Muertos: " + muertos);
                         System.out.println("Heridos: " + heridos);
 
                         if (muertos == 4) {
@@ -57,7 +58,7 @@ public class MuertosHeridos {
                     }
                }
             }
-        } while (!claudico || muertos != 4);
+        } while (!claudico);
     }
     
     public static int[] generarClave() {
@@ -95,7 +96,7 @@ public class MuertosHeridos {
     public static boolean numerosRepetidos(int[] numeros) {
         Arrays.sort(numeros);
         
-        for (int i = 0; i < numeros.length - 1; i++) {
+        for (int i = 0; i < numeros.length - 1; i++) {   
             if (numeros[i] == numeros[i + 1]) {
                 return true; 
             }
