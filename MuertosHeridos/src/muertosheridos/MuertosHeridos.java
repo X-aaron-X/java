@@ -18,6 +18,7 @@ public class MuertosHeridos {
     public static void main(String[] args) {
         int[] clave = generarClave();
         int muertos = 0, heridos;
+        
         String texto;
         boolean claudico = false;
 
@@ -36,18 +37,23 @@ public class MuertosHeridos {
                     System.out.println("Debes introducir un numero de 4 cifras. Entre [0000-9999]");
                 } 
                 else {
-                    int[] numArray = convertirArrayInt(texto);
+                    int[] stringAdivinar = convertirArrayInt(texto);
                     
-                    muertos = contarMuertos(clave, numArray);
-                    heridos = contarHeridos(clave, numArray);
-                    
-                    System.out.println("\nMuertos: " + muertos);
-                    System.out.println("Heridos: " + heridos);
-                    
-                    if (muertos == 4) {
-                        System.out.println("Felicidades la clave ganadora es " + Arrays.toString(clave));
-                        
-                        claudico = true;
+                    if (numerosRepetidos(stringAdivinar)) {
+                        System.out.println("No se pueden repetir los numeros");
+                    }
+                    else {
+                        muertos = contarMuertos(clave, stringAdivinar);
+                        heridos = contarHeridos(clave, stringAdivinar);
+
+                        System.out.println("\nMuertos: " + muertos);
+                        System.out.println("Heridos: " + heridos);
+
+                        if (muertos == 4) {
+                            System.out.println("Felicidades la clave ganadora es " + Arrays.toString(clave));
+
+                            claudico = true;
+                        }
                     }
                }
             }
@@ -55,19 +61,29 @@ public class MuertosHeridos {
     }
     
     public static int[] generarClave() {
+        int numAleatorio;
         int[] clave = new int[4];
         
         for (int i = 0; i < clave.length; i++) {
-            clave[i] = (int) (Math.random() * 10);
+            do {
+                numAleatorio = (int) (Math.random() * 10);
+            
+            // Buscamos en el array desde el indice '0' has el indice 'i' el 'numAleatorio'
+            // Si el resultado es mayor o igual a 0 significa que esta en el array. Si es -1 no esta en el array
+            } while (Arrays.binarySearch(clave, 0, i, numAleatorio) >= 0); 
+            
+            clave[i] = numAleatorio;
+            // Ordenamos el array desde indice 0 hasta la posicion actual
+            Arrays.sort(clave, 0, i + 1);
         }
         
         return clave;
     }
     
-    public static int[] convertirArrayInt(String numString) {
+    public static int[] convertirArrayInt(String stringAdivinar) {
         int[] array = new int[4];
 
-        char[] charArray = numString.toCharArray();
+        char[] charArray = stringAdivinar.toCharArray();
         
         for (int i = 0; i < array.length; i++) {
             array[i] = Character.getNumericValue(charArray[i]);
@@ -76,11 +92,23 @@ public class MuertosHeridos {
         return array;
     }
     
-    public static int contarMuertos(int[] clave, int[] array) {
+    public static boolean numerosRepetidos(int[] numeros) {
+        Arrays.sort(numeros);
+        
+        for (int i = 0; i < numeros.length - 1; i++) {
+            if (numeros[i] == numeros[i + 1]) {
+                return true; 
+            }
+        }
+        
+        return false;
+    }
+    
+    public static int contarMuertos(int[] clave, int[] numAdivinar) {
         int muertos = 0;
         
         for (int i = 0; i < 4; i++) {    
-            if (clave[i] == array[i]) {
+            if (clave[i] == numAdivinar[i]) {
                 muertos++;
             }
         }
@@ -88,12 +116,12 @@ public class MuertosHeridos {
         return muertos;
     }
     
-    public static int contarHeridos(int[] clave, int[] array) {
+    public static int contarHeridos(int[] clave, int[] numAdivinar) {
         int heridos = 0;
        
         for (int i = 0; i < 4; i++) {
            for (int j = 0; j < 4; j++) {
-                if (i != j && clave[i] == array[j]) {
+                if (i != j && clave[i] == numAdivinar[j]) {
                     heridos++;
                 }
             }
