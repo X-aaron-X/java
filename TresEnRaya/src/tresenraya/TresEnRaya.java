@@ -12,7 +12,8 @@ public class TresEnRaya {
     public static final char SIMBOLO1 = 'x';
     public static final char SIMBOLO2 = 'o';
     public static final char SIMBOLOV = '-';
-    public static final int DIMENSION = 4;
+    public static final int DIMENSION = 3;
+    public static char simboloJugador; 
     public static int turno;
     public static boolean alterno = true;
     public static Scanner entrada = new Scanner(System.in);
@@ -22,11 +23,11 @@ public class TresEnRaya {
         inicializaPartida();
 
         do {
-            char simboloJugador = alterno ? SIMBOLO1 : SIMBOLO2;
+            simboloJugador = alterno ? SIMBOLO1 : SIMBOLO2;
             System.out.println("\nTurno del jugador " + (alterno ? "1" : "2") + ": ");
 
             imprimeTablero();
-            dibujarEnCoordenada(simboloJugador);
+            dibujarEnCoordenada();
 
             ganador = comprobar();
 
@@ -65,7 +66,7 @@ public class TresEnRaya {
         }
     }
     
-    public static void dibujarEnCoordenada(char simboloJugador) {
+    public static void dibujarEnCoordenada() {
         int fila, columna;
 
         do {
@@ -76,7 +77,7 @@ public class TresEnRaya {
             columna = entrada.nextInt();
         } while (!datosCorrectos(fila, columna));
 
-        escribeDato(fila, columna, simboloJugador);
+        escribeDato(fila, columna);
         turno++;
      }
 
@@ -96,45 +97,50 @@ public class TresEnRaya {
         return true;
     }
     
-    public static void escribeDato(int fila, int columna, char simboloJugador) {
+    public static void escribeDato(int fila, int columna) {
         tablero[fila - 1][columna - 1] = simboloJugador;
     }
     
     public static boolean comprobar() {
         for (int i = 0; i < DIMENSION; i++) {
-            for (int j = 0; j < DIMENSION; j++) {
-                char simboloActual = tablero[i][j];
-                
-                if (simboloActual != SIMBOLOV) {
-                    //  Fila
-                    if (j <= 0) {
-                        // Recorremos celdas
-                        for (int k = 1; k < DIMENSION; k++) { 
-                            if (tablero[i][j + k] != simboloActual) { 
-                                break; 
-                            }
-                            if (k == (DIMENSION - 1)) { 
-                                return true; 
-                            }
-                        }
-                    }
-                       
-                    //  Columna
-                    if (i <= 0) {
-                        // Recorremos celdas
-                        for (int k = 1; k < DIMENSION; k++) { 
-                            if (tablero[i + k][j] != simboloActual) { 
-                                break; 
-                            }
-                            if (k == (DIMENSION - 1)) { 
-                                return true; 
-                            }
-                        }
-                    }
-                }
+            char simboloFila = tablero[i][0];
+            char simboloColumna = tablero[0][i];
+            
+            if (simboloFila != SIMBOLOV) {
+                return comprobarFilas(i, simboloFila) || comprobarColumna(i, simboloColumna) || comprobarDiagonal();
             }
         }
 
-        return false;
+        return false;    
+    }
+
+    public static boolean comprobarFilas(int fila, char simbolo) {
+        for (int columna = 0; columna < DIMENSION; columna++) {
+            if (tablero[fila][columna] != simbolo) {
+              return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean comprobarColumna(int columna, char simbolo) {
+        for (int fila = 1; fila < DIMENSION; fila++) {
+            if (tablero[fila][columna] != simbolo) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    public static boolean comprobarDiagonal() {
+        for (int i = 0; i < DIMENSION; i++) {
+            if (tablero[i][i] != simboloJugador && tablero[i][DIMENSION - i - 1] != simboloJugador) {
+              return false;
+            }
+        }
+        
+        return true;
     }
 }
