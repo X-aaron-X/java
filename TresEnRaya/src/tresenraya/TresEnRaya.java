@@ -12,26 +12,37 @@ public class TresEnRaya {
     public static final char SIMBOLO1 = 'x';
     public static final char SIMBOLO2 = 'o';
     public static final char SIMBOLOV = '-';
-    public static final int DIMENSION = 3;
+    public static final int DIMENSION = 4;
     public static int turno;
     public static boolean alterno = true;
     public static Scanner entrada = new Scanner(System.in);
 
    public static void main(String[] args) {
+        boolean ganador = false;
         inicializaPartida();
-        
+
         do {
             char simboloJugador = alterno ? SIMBOLO1 : SIMBOLO2;
             System.out.println("\nTurno del jugador " + (alterno ? "1" : "2") + ": ");
-            
-            // Dibujamos el tablero
+
             imprimeTablero();
-            // Dibujamos el simbolo del jugador
             dibujarEnCoordenada(simboloJugador);
 
-            // Cambiamos de jugador
-            alterno = !alterno;
-        } while (!comprobar() && turno < DIMENSION * DIMENSION);
+            ganador = comprobar();
+
+            if (!ganador) {
+                alterno = !alterno;
+            }
+        } while (!ganador && turno < DIMENSION * DIMENSION);
+
+        if (ganador) {
+            System.out.println("El jugador " + (alterno ? "1" : "2") + " ha ganado");
+        }
+        else {
+            System.out.println("Empate");
+        }
+        
+        imprimeTablero();
     }
    
     public static void inicializaPartida() {
@@ -95,20 +106,35 @@ public class TresEnRaya {
                 char simboloActual = tablero[i][j];
                 
                 if (simboloActual != SIMBOLOV) {
-                    // Comprobar fila
-                    if (j <= DIMENSION - 3 && tablero[i][j + 1] == simboloActual && tablero[i][j + 2] == simboloActual) {
-                        return true;
+                    //  Fila
+                    if (j <= 0) {
+                        // Recorremos celdas
+                        for (int k = 1; k < DIMENSION; k++) { 
+                            if (tablero[i][j + k] != simboloActual) { 
+                                break; 
+                            }
+                            if (k == (DIMENSION - 1)) { 
+                                return true; 
+                            }
+                        }
                     }
-                    // Comprobar columna
-                    if (i <= DIMENSION - 3 && tablero[i + 1][j] == simboloActual && tablero[i + 2][j] == simboloActual) {
-                        return true;
+                       
+                    //  Columna
+                    if (i <= 0) {
+                        // Recorremos celdas
+                        for (int k = 1; k < DIMENSION; k++) { 
+                            if (tablero[i + k][j] != simboloActual) { 
+                                break; 
+                            }
+                            if (k == (DIMENSION - 1)) { 
+                                return true; 
+                            }
+                        }
                     }
                 }
             }
         }
 
-        
-        // Cuando no hay ganador
         return false;
     }
 }
