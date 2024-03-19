@@ -9,8 +9,8 @@ import java.util.Scanner;
 
 public class TresEnRaya {
     public static char[][] tablero;
-    public static final char SIMBOLO1 = 'x';
-    public static final char SIMBOLO2 = 'o';
+    public static final char SIMBOLO1 = 'X';
+    public static final char SIMBOLO2 = 'O';
     public static final char SIMBOLOV = '-';
     public static final int DIMENSION = 3;
     public static char simboloJugador; 
@@ -37,10 +37,10 @@ public class TresEnRaya {
         } while (!ganador && turno < DIMENSION * DIMENSION);
 
         if (ganador) {
-            System.out.println("El jugador " + (alterno ? "1" : "2") + " ha ganado");
+            System.out.println("El jugador " + (alterno ? "1" : "2")  + " con el simbolo '" + simboloJugador + "' ha ganado");
         }
         else {
-            System.out.println("Empate");
+            System.out.println("Los jugadores han empatado");
         }
         
         imprimeTablero();
@@ -117,18 +117,17 @@ public class TresEnRaya {
             }
         }
         
-        // Verificar diagonales
+        // Diagonales
         if (comprobarDiagonales()) {
             return true;
         }
-
-
-
+        
         return false;    
     }
 
     public static boolean comprobarFila(int fila, char simbolo) {
         for (int columna = 0; columna < DIMENSION; columna++) {
+            // Comprobamos si la posición del tablero es diferente al símbolo dado
             if (tablero[fila][columna] != simbolo) {
               return false;
             }
@@ -139,24 +138,47 @@ public class TresEnRaya {
 
     public static boolean comprobarColumna(int columna, char simbolo) {
         for (int fila = 0; fila < DIMENSION; fila++) {
-        if (tablero[fila][columna] != simbolo) {
-            return false;
-        }
-    }
-    return true;
-    }
-    
-    public static boolean comprobarDiagonales() {
-        // Diagonal izquierda
-        for (int i = 0; i < DIMENSION; i++) {        
-            if (tablero[i][i] != SIMBOLO1 && tablero[i][i] != SIMBOLO2) {
-              return false;
+            // Comprobamos si la posición del tablero es diferente al símbolo dado
+            if (tablero[fila][columna] != simbolo) {
+                return false;
             }
         }
         
-        // Diagonal derecha
-        
-    
         return true;
+    }
+    
+    public static boolean comprobarDiagonales() {
+        boolean diagonalIzquierda = true;
+        boolean diagonalDerecha = true;
+        
+        int ladoIzquierdo = 0, ladoDerecho = 0;
+        
+        // Diagonal izquierda
+        while (ladoIzquierdo < DIMENSION && diagonalIzquierda) {
+            // Comprobamos si la posiciones no son igual a SIMBOLO1 ni a SIMBOLO2
+            if (tablero[ladoIzquierdo][ladoIzquierdo] != SIMBOLO1) {
+                diagonalIzquierda = false;
+            }
+            
+            if (tablero[ladoIzquierdo][ladoIzquierdo] != SIMBOLO2) {
+                diagonalIzquierda = false;
+            }
+            
+            ladoIzquierdo++;
+        }
+        
+        // Diagonal derecha
+//        while (ladoDerecho < DIMENSION && diagonalDerecha) {
+//            int j = (DIMENSION - ladoDerecho) - 1; 
+//
+//            // Comprobamos si la posiciones no son igual a SIMBOLO1 ni a SIMBOLO2
+//            if (tablero[ladoDerecho][j] != SIMBOLO1 && tablero[ladoDerecho][j] != SIMBOLO2) {
+//                diagonalDerecha = false; // Si llega aqui saldra del while
+//            }
+//            
+//            ladoDerecho++;
+//        }
+    
+        return diagonalIzquierda ;
     }
 }
