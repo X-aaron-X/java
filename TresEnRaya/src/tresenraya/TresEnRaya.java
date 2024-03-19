@@ -105,16 +105,29 @@ public class TresEnRaya {
         for (int i = 0; i < DIMENSION; i++) {
             char simboloFila = tablero[i][0];
             char simboloColumna = tablero[0][i];
+        
+            // Fila
+            if (simboloFila != SIMBOLOV && comprobarFila(i, simboloFila)) {
+                return true;
+            }
             
-            if (simboloFila != SIMBOLOV) {
-                return comprobarFilas(i, simboloFila) || comprobarColumna(i, simboloColumna) || comprobarDiagonal();
+            // Columna
+            if (simboloColumna != SIMBOLOV && comprobarColumna(i, simboloColumna)) {
+                return true;
             }
         }
+        
+        // Verificar diagonales
+        if (comprobarDiagonales()) {
+            return true;
+        }
+
+
 
         return false;    
     }
 
-    public static boolean comprobarFilas(int fila, char simbolo) {
+    public static boolean comprobarFila(int fila, char simbolo) {
         for (int columna = 0; columna < DIMENSION; columna++) {
             if (tablero[fila][columna] != simbolo) {
               return false;
@@ -122,25 +135,28 @@ public class TresEnRaya {
         }
 
         return true;
-    }
+      }
 
     public static boolean comprobarColumna(int columna, char simbolo) {
-        for (int fila = 1; fila < DIMENSION; fila++) {
-            if (tablero[fila][columna] != simbolo) {
-                return false;
-            }
+        for (int fila = 0; fila < DIMENSION; fila++) {
+        if (tablero[fila][columna] != simbolo) {
+            return false;
         }
-        
-        return true;
+    }
+    return true;
     }
     
-    public static boolean comprobarDiagonal() {
-        for (int i = 0; i < DIMENSION; i++) {
-            if (tablero[i][i] != simboloJugador && tablero[i][DIMENSION - i - 1] != simboloJugador) {
+    public static boolean comprobarDiagonales() {
+        // Diagonal izquierda
+        for (int i = 0; i < DIMENSION; i++) {        
+            if (tablero[i][i] != SIMBOLO1 && tablero[i][i] != SIMBOLO2) {
               return false;
             }
         }
         
+        // Diagonal derecha
+        
+    
         return true;
     }
 }
