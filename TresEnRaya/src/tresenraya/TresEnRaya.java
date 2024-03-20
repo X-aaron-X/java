@@ -16,10 +16,10 @@ public class TresEnRaya {
     public static char simboloJugador; 
     public static int turno;
     public static boolean alterno = true;
+    public static boolean ganador = false;
     public static Scanner entrada = new Scanner(System.in);
 
    public static void main(String[] args) {
-        boolean ganador = false;
         inicializaPartida();
 
         do {
@@ -28,21 +28,12 @@ public class TresEnRaya {
 
             imprimeTablero();
             dibujarEnCoordenada();
-
+            
             ganador = comprobar();
-
-            if (!ganador) {
-                alterno = !alterno;
-            }
+            alterno = !ganador ? !alterno : alterno;
         } while (!ganador && turno < DIMENSION * DIMENSION);
-
-        if (ganador) {
-            System.out.println("El jugador " + (alterno ? "1" : "2")  + " con el simbolo '" + simboloJugador + "' ha ganado");
-        }
-        else {
-            System.out.println("Los jugadores han empatado");
-        }
-        imprimeTablero();
+        
+        resultadoJuego();
     }
    
     public static void inicializaPartida() {
@@ -84,8 +75,7 @@ public class TresEnRaya {
         if (fila < 1 || fila > DIMENSION || columna < 1 || columna > DIMENSION) {
             System.out.println("\nLos datos introducidos son incorrectos");
             return false;
-        }
-        
+        }       
         // Comprobamos que la cordenada introducida este vacia
         if (tablero[fila - 1][columna - 1] != SIMBOLOV) {
             System.out.println("\nLa celda introducida ya esta seleccionada");
@@ -118,7 +108,7 @@ public class TresEnRaya {
 
     public static boolean comprobarFila(int fila, char simbolo) {
         for (int columna = 0; columna < DIMENSION; columna++) {
-            // Comprobamos si la posición del tablero es diferente al simbolo que pasamos
+            // Comprobamos si el simbolo de posición actual es distinto al simbolo pasado como argumento
             if (tablero[fila][columna] != simbolo) {
               return false;
             }
@@ -128,12 +118,11 @@ public class TresEnRaya {
 
     public static boolean comprobarColumna(int columna, char simbolo) {
         for (int fila = 0; fila < DIMENSION; fila++) {
-            // Comprobamos si la posición del tablero es diferente al simbolo que pasamos
+            // Comprobamos si el simbolo de posición actual es distinto al simbolo pasado como argumento
             if (tablero[fila][columna] != simbolo) {
                 return false;
             }
         }
-        
         return true;
     }
     
@@ -144,6 +133,8 @@ public class TresEnRaya {
         
         // Diagonal izquierda
         while (i < DIMENSION && diagonalIzquierda) {
+            // Comprobamos que la posicion de la diagonal izquierda es distinta a la posicion [0,0] del tablero
+            // Comprobamos que la posicion de la diagonal izquierda es igual al simbolo '-'
             if (tablero[i][i] != tablero[0][0] || tablero[i][i] == SIMBOLOV) {
                 diagonalIzquierda = false;
             }
@@ -153,13 +144,26 @@ public class TresEnRaya {
         i = 1;
         // Diagonal derecha
         while (i < DIMENSION && diagonalDerecha) {
-            int j = DIMENSION - 1 - i; // Calculamos la columna correspondiente en la diagonal derecha
-
+            // Nos posicionamos en la pocicion de la diagonal derecha
+            int j = (DIMENSION - 1) - i;
+            
+            // Comprobamos que la posicion de la diagonal derecha es distinta a la posicion [0,2] del tablero
+            // Comprobamos que la posicion de la diagonal derecha es igual al simbolo '-'
             if (tablero[i][j] != tablero[0][DIMENSION - 1] || tablero[i][j] == SIMBOLOV) {
                 diagonalDerecha = false;
             }
             i++;
         }
         return diagonalIzquierda || diagonalDerecha;
+    }
+    
+    public static void resultadoJuego() {
+        if (ganador) {
+            System.out.println("El jugador " + (alterno ? "1" : "2")  + " con el símbolo '" + simboloJugador + "' ha ganado");
+        }
+        else {
+            System.out.println("Los jugadores han empatado");
+        }
+        imprimeTablero();
     }
 }
