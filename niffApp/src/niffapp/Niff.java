@@ -42,13 +42,14 @@ public class Niff {
             System.out.print("Introduce el numero del DNI (8 caracteres): ");
             this.dniNum = scanner.nextInt();
 
-        } while (String.valueOf(this.dniNum).length() == 9);
+        } while (String.valueOf(String.format("%08d", this.dniNum)).length() != 8);
         
         calcularLetra();
     }
     
     /**
      * Método que nos permita mostrar el NIF (ocho dígitos, un guion y la letra en mayúscula; por ejemplo: 00395469-F)
+     * @return String
     */
     public String mostrarNif() {
         return String.format("%08d", this.dniNum) + "-" + this.dniLetra;
