@@ -33,7 +33,7 @@ public class Persona {
     public Persona(String nombre, int edad, char sexo) {
         this.nombre = nombre;
         this.edad = edad;
-        this.sexo = sexo;
+        this.sexo = comprobarSexo(sexo);
         this.dni = generarDNI();
         this.peso = 0;
         this.altura = 0;
@@ -51,7 +51,7 @@ public class Persona {
         this.nombre = nombre;
         this.edad = edad;
         this.dni = generarDNI();
-        this.sexo = sexo;
+        this.sexo = comprobarSexo(sexo);
         this.peso = peso;
         this.altura = altura;
     }
@@ -103,7 +103,7 @@ public class Persona {
                "DNI: " + this.dni + "\n" +
                "Sexo: " + this.sexo + "\n" +
                "Peso: " + this.peso + "\n" +
-               "Altura: " + this.altura;
+               "Altura: " + this.altura + "\n";
     }
     
     /**
@@ -154,7 +154,7 @@ public class Persona {
      * @param sexo
      * @return 
      */
-     private char comprobarSexo(char sexo) {
-        return (sexo == 'M') ? sexo : 'H';
+     private char comprobarSexo(char sexo) {  
+        return (Character.toUpperCase(sexo) == 'M') ? 'M' : 'H';
     }
 }

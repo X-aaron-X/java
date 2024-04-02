@@ -36,31 +36,32 @@ public class PersonaApp {
         Persona persona2 = new Persona(nombre, edad, sexo);
         Persona persona3 = new Persona();
         
-        persona3.setNombre("Nombre por defecto");
-        persona3.setEdad(25);
+        persona3.setNombre("Persona3");
+        persona3.setEdad(55);
         persona3.setSexo('H');
         persona3.setPeso(70);
         persona3.setAltura(1.50);
         
-         Persona[] personas = {persona1, persona2, persona3};
+        Persona[] personas = {persona1, persona2, persona3};
 
         for (Persona persona : personas) {
             switch (persona.calcularIMC()) {
                 case -1:
-                    System.out.println(persona.getNombre() + " está por debajo de su peso ideal.");
+                    System.out.println("\nEsta por debajo de su peso ideal");
                     break;
                 case 0:
-                    System.out.println(persona.getNombre() + " está en su peso ideal.");
+                    System.out.println("\nEsta en su peso ideal");
                     break;
                 case 1:
-                    System.out.println(persona.getNombre() + " tiene sobrepeso.");
+                    System.out.println("\nTiene sobrepeso");
                     break;
             }
 
             if (persona.esMayorDeEdad()) {
-                System.out.println(persona.getNombre() + " es mayor de edad.");
-            } else {
-                System.out.println(persona.getNombre() + " no es mayor de edad.");
+                System.out.println("Es mayor de edad");
+            }
+            else {
+                System.out.println("Eres menor de edad");
             }
 
             System.out.println(persona);
