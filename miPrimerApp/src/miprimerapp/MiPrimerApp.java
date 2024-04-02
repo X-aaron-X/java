@@ -23,5 +23,11 @@ public class MiPrimerApp {
         System.out.println("El precio de la sal es " + sal.obtenerPrecio() + " del producto " + sal.getDescripcion());
         System.out.println("El precio del azúcar es " + azucar.obtenerPrecio() + " del producto " + azucar.getDescripcion());
         System.out.println("El precio de la leche es " + leche.obtenerPrecio());
+        
+        ProductoGranel cafe = new ProductoGranel();
+        ProductoGranel judias = new ProductoGranel(5, "Judias", 2.5, 5);
+        
+        System.out.println("El precio del azúcar es " + cafe.obtenerPrecio() + " del producto " + cafe.getDescripcion());
+        System.out.println("El precio del azúcar es " + judias.obtenerPrecio() + " del producto " + judias.getDescripcion());
     }
 }

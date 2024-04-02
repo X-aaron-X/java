@@ -20,6 +20,10 @@ public class Producto {
         this.descripcion = "";
         this.precio = 0;
     }
+
+    public double getPrecio() {
+        return precio;
+    }
     
     public int getCodigo() {
         return codigo;
