@@ -43,18 +43,37 @@ public class Persona {
      * Un constructor con todos los atributos como parámetro
      * @param nombre
      * @param edad
-     * @param dni
      * @param sexo
      * @param peso
      * @param altura
     */
-    public Persona(String nombre, int edad, String dni, char sexo, double peso, double altura) {
+    public Persona(String nombre, int edad, char sexo, double peso, double altura) {
         this.nombre = nombre;
         this.edad = edad;
-        this.dni = dni;
+        this.dni = generarDNI();
         this.sexo = sexo;
         this.peso = peso;
         this.altura = altura;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public char getSexo() {
+        return sexo;
+    }
+
+    public double getPeso() {
+        return peso;
+    }
+
+    public double getAltura() {
+        return altura;
     }
     
     public void setNombre(String nombre) {
@@ -130,9 +149,12 @@ public class Persona {
         return this.edad >= 18;
     }
     
-    private char comprobarSexo(char sexo) {
-        
-        
-        return 'a';
+    /**
+     * Comprueba que el sexo introducido es correcto. Si no es correcto, será H. No será visible al exterior
+     * @param sexo
+     * @return 
+     */
+     private char comprobarSexo(char sexo) {
+        return (sexo == 'M') ? sexo : 'H';
     }
 }
