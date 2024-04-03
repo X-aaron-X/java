@@ -23,9 +23,14 @@ public class Pez extends Animal{
         this.profMax = profMax;
         this.tipo = tipo;
     }
-
+    
+    /**
+     * Añade también un constructor por defecto utilizando el constructor del padre que desees (recuerda que Animal no tiene ese constructor).
+     * @param especie
+     * @param alimentacion 
+     */
     public Pez(String especie, String alimentacion) {
-        super(especie, alimentacion);
+        super("", "");
         this.profMax = 0;
         this.tipo = "";
     }
@@ -45,7 +50,11 @@ public class Pez extends Animal{
     public void fijaTipo (String tipo) {
         this.tipo = tipo;
     }
-    
+       
+    /**
+     * Por último, sobreescribe el método toString
+     * @return String
+     */
     @Override
     public String toString() {
         return "El pez es de tipo " + obtenTipo() +" y alcanza una profundidad máxima de " + obtenProfMax() + " metros";
