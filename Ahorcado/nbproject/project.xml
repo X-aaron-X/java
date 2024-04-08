@@ -5,7 +5,7 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>Ahorcado</name>
             <source-roots>
-                <root id="src.file.dir"/>
+                <root id="src.files.dir"/>
                 <root id="src.dir"/>
             </source-roots>
             <test-roots>
