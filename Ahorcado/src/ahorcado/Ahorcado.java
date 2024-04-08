@@ -7,13 +7,12 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Ahorcado {
-    private static final String NOMBRE_FICHERO = "files\\palabras.txt";
-    private static final int MAX_INTENTOS = 6;
-
     public static void main(String[] args) {
-        try (BufferedReader fichero = new BufferedReader(new FileReader(NOMBRE_FICHERO))) {
-            Random random = new Random();
-            String palabraAdivinar = seleccionarPalabraAleatoria(fichero, random);
+        final String FICHERO = "files\\palabras.txt";
+        
+        try {
+            BufferedReader fichero = new BufferedReader(new FileReader(FICHERO));
+            String palabraAdivinar = palabraAleatoria(fichero);
             
             if (palabraAdivinar != null) {
                 jugarAhorcado(palabraAdivinar);
@@ -22,18 +21,25 @@ public class Ahorcado {
                 System.out.println("El fichero esta vacio");
             }
         }
-        catch (IOException e) {
+        catch (Exception e) {
             System.out.println("El fichero no existe o la ruta es incorrecta");
         }
     }
-
-    public static String seleccionarPalabraAleatoria(BufferedReader fichero, Random random) throws IOException {
-        String palabraAdivinar = null;
+    
+    /**
+     * Cogemos una palabra aleatoria de un fichero. Si el fichero esta vacio devuelve null
+     * @param fichero
+     * @return String
+     * @throws IOException 
+    **/
+    public static String palabraAleatoria(BufferedReader fichero) throws IOException {
+        String palabraAdivinar = null, linea;
+        Random random = new Random();
         int numLineas = 0;
-        String linea;
 
         while ((linea = fichero.readLine()) != null) {
             numLineas++;
+            
             if (random.nextInt(numLineas) == 0) {
                 palabraAdivinar = linea.trim();
             }
@@ -41,10 +47,14 @@ public class Ahorcado {
 
         return palabraAdivinar;
     }
-
+    
+    /**
+     * Jugar al ahorcado pidiendo al usuario caracteres con 6 intentos
+     * @param palabraSecreta
+    **/
     public static void jugarAhorcado(String palabraSecreta) {
         Scanner scanner = new Scanner(System.in);
-        int intentosRestantes = MAX_INTENTOS;
+        int intentosRestantes = 6;
         char[] palabraParaAdivinar = inicializarPalabraAdivinada(palabraSecreta);
 
         boolean juegoTerminado = false;
@@ -62,28 +72,42 @@ public class Ahorcado {
             }
 
             if (intentosRestantes <= 0) {
-                System.out.println("Perdiste. La palabra correcta era: " + palabraSecreta);
+                System.out.println("\nPerdiste\nLa palabra correcta es: " + palabraSecreta);
                 juegoTerminado = true;
             }
             else if (String.valueOf(palabraParaAdivinar).equalsIgnoreCase(palabraSecreta)) {
-                System.out.println("\nGanaste. La palabra adivinada es:");
+                System.out.println("\nGanaste.\nLa palabra adivinada es:");
                 
                 mostrarPalabraAdivinada(palabraSecreta.toCharArray());
                 juegoTerminado = true;
             }
         }
     }
-
+    
+    /**
+     * Contamos cuantos caracteres tiene y lo trasformamos a '_' cada caracter
+     * @param palabraSecreta
+     * @return char
+    **/
     public static char[] inicializarPalabraAdivinada(String palabraSecreta) {
         char[] palabraParaAdivinar = new char[palabraSecreta.length()];
+        
         for (int i = 0; i < palabraParaAdivinar.length; i++) {
             palabraParaAdivinar[i] = '_';
         }
         return palabraParaAdivinar;
     }
-
+    
+    /**
+     * Buscaos con la letra que pasamos si esta en palabraAdivinar
+     * @param letra
+     * @param palabraSecreta
+     * @param palabraParaAdivinar
+     * @return boolean
+    **/
     public static boolean adivinarLetra(char letra, String palabraSecreta, char[] palabraParaAdivinar) {
         boolean letraEncontrada = false;
+        
         for (int i = 0; i < palabraSecreta.length(); i++) {
             if (Character.toLowerCase(palabraSecreta.charAt(i)) == letra) {
                 palabraParaAdivinar[i] = palabraSecreta.charAt(i);
@@ -92,18 +116,28 @@ public class Ahorcado {
         }
         return letraEncontrada;
     }
-
+    
+    /**
+     * 
+     * @param palabraAdivinada 
+    **/
     public static void mostrarPalabraAdivinada(char[] palabraAdivinada) {
-        for (char c : palabraAdivinada) {
-            System.out.print(c + " ");
+        for (char caracter : palabraAdivinada) {
+            System.out.print(caracter + " ");
         }
         System.out.println();
     }
-
+    
+    /**
+     * Contamos los giones que tiene palabraAdivinada
+     * @param palabraAdivinada
+     * @return int
+    **/
     public static int contarGuionesBajos(char[] palabraAdivinada) {
         int contador = 0;
-        for (char c : palabraAdivinada) {
-            if (c == '_') {
+        
+        for (char caracter : palabraAdivinada) {
+            if (caracter == '_') {
                 contador++;
             }
         }
