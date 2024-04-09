@@ -1,8 +1,11 @@
 package ahorcado;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -11,7 +14,7 @@ public class Ahorcado {
         final String FICHERO = "files\\palabras.txt";
         
         try {
-            BufferedReader fichero = new BufferedReader(new FileReader(FICHERO));
+            BufferedReader fichero = new BufferedReader(new InputStreamReader(new FileInputStream(FICHERO), StandardCharsets.UTF_8));
             String palabraAdivinar = palabraAleatoria(fichero);
             
             if (palabraAdivinar != null) {
@@ -21,7 +24,7 @@ public class Ahorcado {
                 System.out.println("El fichero esta vacio");
             }
         }
-        catch (Exception e) {
+        catch (IOException e) {
             System.out.println("El fichero no existe o la ruta es incorrecta");
         }
     }
@@ -56,19 +59,26 @@ public class Ahorcado {
         Scanner scanner = new Scanner(System.in);
         int intentosRestantes = 6;
         char[] palabraParaAdivinar = inicializarPalabraAdivinada(palabraSecreta);
+        ArrayList<Character> caracteresIntroducidos = new ArrayList<Character>();
 
         boolean juegoTerminado = false;
+        
+        System.out.println("Juego del Ahorcado:");
+        System.out.println("La palabra adivinar tiene " + palabraParaAdivinar.length + " caracteres\n");
 
         while (!juegoTerminado) {
-            System.out.println("\nAdivina los " + contarGuionesBajos(palabraParaAdivinar) + " caracteres");
-            mostrarPalabraAdivinada(palabraParaAdivinar);
+            mostrarPalabraParaAdivinada(palabraParaAdivinar);
             System.out.println("\nIntentos restantes: " + intentosRestantes);
 
             System.out.print("Introduce una letra: ");
             char letra = scanner.next().toLowerCase().charAt(0);
 
-            if (!adivinarLetra(letra, palabraSecreta.toLowerCase(), palabraParaAdivinar)) {
+            if (!adivinarLetra(letra, palabraSecreta.toLowerCase(), palabraParaAdivinar) && caracteresIntroducidos.indexOf(letra) == -1) {
                 intentosRestantes--;
+                caracteresIntroducidos.add(letra);
+            }
+            else {
+                System.out.println("El caracter ya lo haz introducido\n");
             }
 
             if (intentosRestantes <= 0) {
@@ -76,9 +86,9 @@ public class Ahorcado {
                 juegoTerminado = true;
             }
             else if (String.valueOf(palabraParaAdivinar).equalsIgnoreCase(palabraSecreta)) {
-                System.out.println("\nGanaste.\nLa palabra adivinada es:");
+                System.out.println("\nGanaste.\nLa palabra secreta es:");
                 
-                mostrarPalabraAdivinada(palabraSecreta.toCharArray());
+                mostrarPalabraParaAdivinada(palabraSecreta.toCharArray());
                 juegoTerminado = true;
             }
         }
@@ -118,29 +128,14 @@ public class Ahorcado {
     }
     
     /**
-     * 
+     * Muestra la palabra para adivinar con sus espacios entre los guiones 
      * @param palabraAdivinada 
     **/
-    public static void mostrarPalabraAdivinada(char[] palabraAdivinada) {
+    public static void mostrarPalabraParaAdivinada(char[] palabraAdivinada) {
         for (char caracter : palabraAdivinada) {
             System.out.print(caracter + " ");
         }
-        System.out.println();
-    }
-    
-    /**
-     * Contamos los giones que tiene palabraAdivinada
-     * @param palabraAdivinada
-     * @return int
-    **/
-    public static int contarGuionesBajos(char[] palabraAdivinada) {
-        int contador = 0;
         
-        for (char caracter : palabraAdivinada) {
-            if (caracter == '_') {
-                contador++;
-            }
-        }
-        return contador;
+        System.out.println();
     }
 }
