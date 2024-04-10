@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -59,10 +59,10 @@ public class Ahorcado {
         Scanner scanner = new Scanner(System.in);
         int intentosRestantes = 6;
         char[] palabraParaAdivinar = inicializarPalabraAdivinada(palabraSecreta);
-        ArrayList<Character> caracteresIntroducidos = new ArrayList<Character>();
+        HashSet<Character> caracteresIntroducidos = new HashSet<>();
 
         boolean juegoTerminado = false;
-        
+
         System.out.println("Juego del Ahorcado:");
         System.out.println("La palabra adivinar tiene " + palabraParaAdivinar.length + " caracteres\n");
 
@@ -73,12 +73,15 @@ public class Ahorcado {
             System.out.print("Introduce una letra: ");
             char letra = scanner.next().toLowerCase().charAt(0);
 
-            if (!adivinarLetra(letra, palabraSecreta.toLowerCase(), palabraParaAdivinar) && caracteresIntroducidos.indexOf(letra) == -1) {
-                intentosRestantes--;
+            if (!caracteresIntroducidos.contains(letra)) {
                 caracteresIntroducidos.add(letra);
+                
+                if (!adivinarLetra(letra, palabraSecreta, palabraParaAdivinar)) {
+                    intentosRestantes--;
+                }
             }
             else {
-                System.out.println("El caracter ya lo haz introducido\n");
+                System.out.println("El caracter '" + letra +"' ya lo haz introducido\n");
             }
 
             if (intentosRestantes <= 0) {
@@ -87,13 +90,12 @@ public class Ahorcado {
             }
             else if (String.valueOf(palabraParaAdivinar).equalsIgnoreCase(palabraSecreta)) {
                 System.out.println("\nGanaste.\nLa palabra secreta es:");
-                
                 mostrarPalabraParaAdivinada(palabraSecreta.toCharArray());
                 juegoTerminado = true;
             }
         }
     }
-    
+ 
     /**
      * Contamos cuantos caracteres tiene y lo trasformamos a '_' cada caracter
      * @param palabraSecreta
