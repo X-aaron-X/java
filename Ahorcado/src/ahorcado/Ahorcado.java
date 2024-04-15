@@ -79,19 +79,19 @@ public class Ahorcado {
                 if (!adivinarLetra(letra, palabraSecreta, palabraParaAdivinar)) {
                     intentosRestantes--;
                 }
+                
+                if (intentosRestantes <= 0) {
+                    System.out.println("\nPerdiste\nLa palabra correcta es: " + palabraSecreta);
+                    juegoTerminado = true;
+                }
+                else if (String.valueOf(palabraParaAdivinar).equalsIgnoreCase(palabraSecreta)) {
+                    System.out.println("\nGanaste.\nLa palabra secreta es:");
+                    mostrarPalabraParaAdivinada(palabraSecreta.toCharArray());
+                    juegoTerminado = true;
+                }
             }
             else {
                 System.out.println("El caracter '" + letra +"' ya lo haz introducido\n");
-            }
-
-            if (intentosRestantes <= 0) {
-                System.out.println("\nPerdiste\nLa palabra correcta es: " + palabraSecreta);
-                juegoTerminado = true;
-            }
-            else if (String.valueOf(palabraParaAdivinar).equalsIgnoreCase(palabraSecreta)) {
-                System.out.println("\nGanaste.\nLa palabra secreta es:");
-                mostrarPalabraParaAdivinada(palabraSecreta.toCharArray());
-                juegoTerminado = true;
             }
         }
     }
