@@ -52,7 +52,7 @@ public class ConsultadorHacendado {
     }
     
     /**
-     * Realiza una consulta a la base de datos. El PK puede ser INT o VARCHAR.
+     * Realiza una consulta a la base de datos mostrando todos los datos. El PK puede ser INT o VARCHAR.
      * @param tabla Nombre de la tabla.
      * @param pk Primary key de la tabla.
      * @param id Identificador para la consulta.
@@ -61,7 +61,7 @@ public class ConsultadorHacendado {
         String consulta = "SELECT * FROM " + tabla + " WHERE " + pk + " = ?";
         
         try (PreparedStatement comprobar = conexion.prepareStatement(consulta)) {
-            // Comprobamos si "id" solo tiene digitos
+            // Comprobamos si "id" es solo numerico
             if (id.matches("\\d+")) {
                 comprobar.setInt(1, Integer.parseInt(id));
             }
@@ -82,21 +82,25 @@ public class ConsultadorHacendado {
     /**
      * Imprime los resultados de una consulta a la base de datos. Mostrando todas las columas de la tabla.
      * @param resultados Los resultados de la consulta a imprimir.
-     * @throws SQLException Si ocurre un error al acceder a los resultados.
     */
-    public static void imprimirResultados(ResultSet resultados) throws SQLException {
-        ResultSetMetaData datos = resultados.getMetaData();
-        int numColumnas = datos.getColumnCount();
+    public static void imprimirResultados(ResultSet resultados) {
+        try {
+            ResultSetMetaData datos = resultados.getMetaData();
+            int numColumnas = datos.getColumnCount();
 
-        while (resultados.next()) {
-            for (int i = 1; i <= numColumnas; i++) {
-                Object valor = resultados.getObject(i);
-                String nombreColumna = datos.getColumnName(i);
-                
-                System.out.println(nombreColumna + ": " + valor);
+            while (resultados.next()) {
+                for (int i = 1; i <= numColumnas; i++) {
+                    Object valor = resultados.getObject(i);
+                    String nombreColumna = datos.getColumnName(i);
+
+                    System.out.println(nombreColumna + ": " + valor);
+                }
+
+                System.out.println();
             }
-            
-            System.out.println();
+        }
+        catch (SQLException e) {
+            System.out.println("Error al imprimir los resultados");
         }
     }
 }
