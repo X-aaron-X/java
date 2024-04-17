@@ -1,43 +1,37 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package consultadorcorteingles;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JTextField;
 
 /**
  *
  * @author Aaron
  */
 public class MiVentana extends javax.swing.JFrame {
-    static Connection conexion = null;
-    static String url = "jdbc:mysql://localhost:3307/ciclistas";
-    static String user = "root";
-    static String pass = "";
+    private static final String URL = "jdbc:mysql://localhost:3307/ciclistas";
+    private static final String USER = "root";
+    private static final String PASS = "";
+    private static Connection conexion = null;
 
-    /**
-     * Creates new form MiVentana
-     */
     public MiVentana() {
         initComponents();
         
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conexion = DriverManager.getConnection(url, user, pass);
+            conexion = DriverManager.getConnection(URL, USER, PASS);
+            
+            insertarPkComboBox("ciclista", "dorsal", jComboBox1);
+            insertarPkComboBox("etapa", "numetapa", jComboBox2);
         }
         catch (ClassNotFoundException | SQLException e) {
             System.out.println("Error de la conexion de la base de datos");
         }
-        
-        insertarPkComboBox("ciclista", "dorsal", jComboBox1);
-        insertarPkComboBox("etapa", "numetapa", jComboBox2);
     }
     
     /**
@@ -46,7 +40,7 @@ public class MiVentana extends javax.swing.JFrame {
      * @param pk
      * @param comboBox 
      */
-    public void insertarPkComboBox(String tabla, String pk, JComboBox<String> comboBox) {
+    public static void insertarPkComboBox(String tabla, String pk, JComboBox<String> comboBox) {
         String consulta = "SELECT " + pk + " FROM " + tabla +" ORDER BY " + pk;
         
         try (PreparedStatement comprobar = conexion.prepareStatement(consulta);
@@ -59,6 +53,35 @@ public class MiVentana extends javax.swing.JFrame {
         }
         catch (SQLException e) {
             System.out.println("Error al ejecutar la consulta");
+        }
+    }
+    
+    public void consultaField(String tabla, String pk, int valorPk, String[] campos) {
+        try {
+        String consulta = "SELECT " + String.join(", ", campos) + " FROM " + tabla + " WHERE " + pk + " = " + valorPk;
+    
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                Object valor;
+                String jtextField;
+                
+                ResultSet resultados = statement.executeQuery();            
+                
+                if (!resultados.next()) {
+                    System.out.println("No hay resultados");
+                    return;
+                }
+
+                for (String campo : campos) {
+                    valor = resultados.getObject(campo);
+                    jtextField = campo + "_" + tabla;
+
+                    JTextField field = (JTextField) this.getClass().getDeclaredField(jtextField).get(this);
+                    field.setText(valor.toString());
+                }      
+            }
+        }
+        catch (SQLException | NoSuchFieldException | IllegalAccessException e) {
+            System.out.println("Error consulta: " + e.getMessage());
         }
     }
 
@@ -82,12 +105,12 @@ public class MiVentana extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        fieldEdad = new javax.swing.JTextField();
-        fieldNombre = new javax.swing.JTextField();
-        fieldNombreEquipo = new javax.swing.JTextField();
-        fieldKms = new javax.swing.JTextField();
-        fieldLlegada = new javax.swing.JTextField();
-        fieldSalida = new javax.swing.JTextField();
+        edad_ciclista = new javax.swing.JTextField();
+        nombre_ciclista = new javax.swing.JTextField();
+        nomequipo_ciclista = new javax.swing.JTextField();
+        kms_etapa = new javax.swing.JTextField();
+        llegada_etapa = new javax.swing.JTextField();
+        salida_etapa = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -156,16 +179,16 @@ public class MiVentana extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(23, 23, 23)
-                        .addComponent(fieldNombreEquipo))
+                        .addComponent(nomequipo_ciclista))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(68, 68, 68)
-                        .addComponent(fieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(nombre_ciclista, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(87, 87, 87)
-                        .addComponent(fieldEdad)))
+                        .addComponent(edad_ciclista)))
                 .addGap(136, 136, 136)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -177,9 +200,9 @@ public class MiVentana extends javax.swing.JFrame {
                             .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(fieldKms, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
-                            .addComponent(fieldSalida, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(fieldLlegada, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(kms_etapa, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+                            .addComponent(salida_etapa, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(llegada_etapa, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(42, 42, 42))))
         );
         layout.setVerticalGroup(
@@ -199,19 +222,20 @@ public class MiVentana extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel7)
-                    .addComponent(fieldKms, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(kms_etapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(edad_ciclista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
-                    .addComponent(fieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(nombre_ciclista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(salida_etapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(fieldNombreEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldLlegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nomequipo_ciclista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(llegada_etapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addGap(54, 54, 54)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -224,50 +248,15 @@ public class MiVentana extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            int dorsal = Integer.parseInt((String) jComboBox1.getSelectedItem());
-            String consulta = "SELECT edad, nombre, nomequipo FROM ciclista WHERE dorsal = " + dorsal;
-            
-            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
-                ResultSet resultados = statement.executeQuery();
-                resultados.next();
-                
-                int edad = resultados.getInt("edad");
-                String nombre = resultados.getString("nombre");
-                String nombreEquipo = resultados.getString("nomequipo");
-
-                fieldEdad.setText(String.valueOf(edad));
-                fieldNombre.setText(nombre);
-                fieldNombreEquipo.setText(nombreEquipo);
-            }
-        }
-        catch (NumberFormatException | SQLException e) {
-            System.out.println("Error consulta: " + e.getMessage());
-        }
+        int valorPk = Integer.parseInt((String) jComboBox1.getSelectedItem());
+        
+        consultaField("ciclista", "dorsal" , valorPk, new String[]{"edad", "nombre", "nomequipo"});
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            int numetapa = Integer.parseInt((String) jComboBox2.getSelectedItem());
-            String consulta = "SELECT kms, salida, llegada FROM etapa WHERE numetapa = " + numetapa;
-            
-            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
-                ResultSet resultados = statement.executeQuery();
-                resultados.next();
-                
-                int kms = resultados.getInt("kms");
-                String salida = resultados.getString("salida");
-                String llegada = resultados.getString("llegada");
-
-                fieldKms.setText(String.valueOf(kms));
-                fieldSalida.setText(salida);
-                fieldLlegada.setText(llegada);
-
-            }
-        }
-        catch (NumberFormatException | SQLException e) {
-            System.out.println("Error consulta: " + e.getMessage());
-        }
+        int valorPk = Integer.parseInt((String) jComboBox2.getSelectedItem());
+        
+        consultaField("etapa", "numetapa", valorPk, new String[]{"kms", "salida", "llegada"});
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -306,12 +295,7 @@ public class MiVentana extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField fieldEdad;
-    private javax.swing.JTextField fieldKms;
-    private javax.swing.JTextField fieldLlegada;
-    private javax.swing.JTextField fieldNombre;
-    private javax.swing.JTextField fieldNombreEquipo;
-    private javax.swing.JTextField fieldSalida;
+    private javax.swing.JTextField edad_ciclista;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -325,5 +309,10 @@ public class MiVentana extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JTextField kms_etapa;
+    private javax.swing.JTextField llegada_etapa;
+    private javax.swing.JTextField nombre_ciclista;
+    private javax.swing.JTextField nomequipo_ciclista;
+    private javax.swing.JTextField salida_etapa;
     // End of variables declaration//GEN-END:variables
 }
