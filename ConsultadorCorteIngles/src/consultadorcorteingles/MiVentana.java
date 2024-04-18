@@ -56,20 +56,26 @@ public class MiVentana extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * 
+     * @param tabla
+     * @param pk
+     * @param valorPk
+     * @param campos 
+     */
     public void consultaField(String tabla, String pk, int valorPk, String[] campos) {
         try {
         String consulta = "SELECT " + String.join(", ", campos) + " FROM " + tabla + " WHERE " + pk + " = " + valorPk;
     
             try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
-                Object valor;
-                String jtextField;
-                
                 ResultSet resultados = statement.executeQuery();            
                 
                 if (!resultados.next()) {
-                    System.out.println("No hay resultados");
+                    System.out.println("No hay resultados de la consulta");
                     return;
                 }
+                
+                Object valor; String jtextField;
 
                 for (String campo : campos) {
                     valor = resultados.getObject(campo);
