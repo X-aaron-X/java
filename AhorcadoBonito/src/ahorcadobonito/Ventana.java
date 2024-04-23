@@ -6,11 +6,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Aaron
- */
+*/
 public class Ventana extends javax.swing.JFrame {
     private static final String FICHERO = "files\\palabras.txt";
     private String palabraSecreta;
@@ -19,7 +20,7 @@ public class Ventana extends javax.swing.JFrame {
 
     public Ventana() {
         initComponents();
-        
+    
         try (BufferedReader fichero = new BufferedReader(new InputStreamReader(new FileInputStream(FICHERO), StandardCharsets.UTF_8))) {
             palabraSecreta = palabraAleatoria(fichero);
             
@@ -102,11 +103,14 @@ public class Ventana extends javax.swing.JFrame {
         if (palabraAdivinadaStr.equalsIgnoreCase(palabraSecreta)) {
             mensaje.setText("Ganaste");
             jButton1.setEnabled(false);
+            
+            reiniciar();
         }
     }
     
     /**
-     * Muestra partes de un dibujo de un ahorcado dependiendo de cuántos intentos tengas
+     * Muestra las partes del ahorcado dependiendo dependiendo de los fallos que tenga.
+     * Si los intentos llegan a 0 pondra un mensaje
     */
     private void mostrarDibujoAhorcado() {
         switch (intentosRestantes) {
@@ -142,6 +146,14 @@ public class Ventana extends javax.swing.JFrame {
                 muneco8.setOpaque(true);
                 muneco8.repaint();
                 break;
+            case 1:
+                muneco9.setOpaque(true);
+                muneco9.repaint();
+                break;
+            case 0:
+                muneco10.setOpaque(true);
+                muneco10.repaint();
+                break;
             default:
                 break;
         }
@@ -149,8 +161,22 @@ public class Ventana extends javax.swing.JFrame {
         if (intentosRestantes == 0) {
             mensaje.setText("Perdiste. La palabra secreta es: " + palabraSecreta);
             jButton1.setEnabled(false);
+            
+            reiniciar();
         }
     }
+    
+     private void reiniciar() {
+        int resp = JOptionPane.showConfirmDialog(null,"¿Quieres volver a jugar?");
+         
+        if (JOptionPane.OK_OPTION == resp){
+            dispose();
+            AhorcadoBonito.main(null);
+        }
+        else {
+            System.exit(0);
+        }
+     }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -173,6 +199,8 @@ public class Ventana extends javax.swing.JFrame {
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
         muneco7 = new javax.swing.Box.Filler(new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 32767));
         muneco8 = new javax.swing.Box.Filler(new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 32767));
+        muneco9 = new javax.swing.Box.Filler(new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 32767));
+        muneco10 = new javax.swing.Box.Filler(new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 32767));
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         letras = new javax.swing.JLabel();
@@ -203,6 +231,10 @@ public class Ventana extends javax.swing.JFrame {
 
         muneco8.setBackground(new java.awt.Color(0, 0, 0));
 
+        muneco9.setBackground(new java.awt.Color(0, 0, 0));
+
+        muneco10.setBackground(new java.awt.Color(0, 0, 0));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -223,22 +255,30 @@ public class Ventana extends javax.swing.JFrame {
                                 .addComponent(muneco5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(muneco7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(38, 38, 38)
                                         .addComponent(filler2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(135, 135, 135)))
+                                        .addGap(135, 135, 135))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(muneco7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                .addComponent(muneco9, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, 0)))))
                                 .addComponent(muneco6, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(muneco8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(178, 178, 178)
-                        .addComponent(muneco2, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(muneco8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(0, 0, 0)
+                                        .addComponent(muneco10, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(19, 19, 19))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(muneco3, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(muneco2, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(muneco3, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32))
         );
         jPanel1Layout.setVerticalGroup(
@@ -250,27 +290,34 @@ public class Ventana extends javax.swing.JFrame {
                         .addComponent(muneco3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(muneco2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(muneco10, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
                                         .addComponent(muneco5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, 0)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(muneco6, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(13, 13, 13)
-                                                .addComponent(muneco7, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(filler2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(33, 33, 33)
-                                        .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(muneco7, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(22, 22, 22)
+                                                .addComponent(muneco9, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(140, 140, 140)
+                                .addComponent(filler2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(33, 33, 33)
+                                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(36, 36, 36))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(68, 68, 68)
-                                .addComponent(muneco8, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(204, 204, 204)
-                                .addComponent(muneco1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(68, 68, 68)
+                                        .addComponent(muneco8, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(204, 204, 204)
+                                        .addComponent(muneco1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(0, 0, 0)
+                                        .addComponent(muneco2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(23, 23, 23))))
                     .addComponent(muneco4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
@@ -411,6 +458,7 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JLabel letras;
     private javax.swing.JLabel mensaje;
     private javax.swing.Box.Filler muneco1;
+    private javax.swing.Box.Filler muneco10;
     private javax.swing.Box.Filler muneco2;
     private javax.swing.Box.Filler muneco3;
     private javax.swing.Box.Filler muneco4;
@@ -418,5 +466,6 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.Box.Filler muneco6;
     private javax.swing.Box.Filler muneco7;
     private javax.swing.Box.Filler muneco8;
+    private javax.swing.Box.Filler muneco9;
     // End of variables declaration//GEN-END:variables
 }

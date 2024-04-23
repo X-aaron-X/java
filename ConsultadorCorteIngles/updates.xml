@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updateDescriptor baseUrl="">
+  <entry targetMediaFileId="25" updatableVersionMin="" updatableVersionMax="" fileName="Corteingles_windows-x64_1_0.msi" newVersion="1.0" newMediaFileId="25" fileSize="51779584" md5Sum="a9d7c165b4a37644b8600190e079977e" sha256Sum="7ac80b5b309a4ac5e5f2d8ad9680e606f7afb7f9910d102202cbe06fb7abfe0e" bundledJre="windows-amd64-17.0.11.tar.gz" archive="false" singleBundle="false">
+    <comment language="es" />
+  </entry>
+</updateDescriptor>
