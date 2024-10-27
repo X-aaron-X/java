@@ -8,13 +8,45 @@ import javax.swing.JOptionPane;
  * @author Aaron
  */
 public class EjerciciosIniciales {
+    /**
+     * Comprueba si es un numero double
+     * @param message Muestra el mensaje para el JOptionPane
+     * @return double
+    */
+    private static double validarNumDouble(String message) {
+        while (true) {
+            try {
+                return Double.parseDouble(JOptionPane.showInputDialog(message));
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Introduce un numero valido");
+            }
+        }
+    }
+    
+    /**
+     * Comprueba si es un numero int
+     * @param message Muestra el mensaje para el JOptionPane
+     * @return int
+    */
+    private static int validarNumEntero(String message) {
+        while (true) {
+            try {
+                return Integer.parseInt(JOptionPane.showInputDialog(message));
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Introduce un numero valido");
+            }
+        }
+    }
+    
 
     public static void main(String[] args) {
         //ejercicio1();
         //ejercicio5();
         //ejercicio7();
         //ejercicio11();
-        ejercicio12();
+        //ejercicio12();
         //ejercicio13();
         //ejercicio14();
         //ejercicio15();
@@ -25,36 +57,17 @@ public class EjerciciosIniciales {
         //ejercicio20();
         //ejercicio21();
         //ejercicio22();
-        //ejercicio23();
+        ejercicio23();
         //ejercicio24();
     }
     
     /**
-     * Pide al usuario dos variables numéricas, muestra por consola la suma, resta, multiplicación, división y módulo (resto de la división)
+     * Pide al usuario dos variables numéricas, muestra por consola la suma, resta, multiplicación, 
+     * división y módulo (resto de la división)
     */
     public static void ejercicio1 () {        
-        int num1 = 0, num2 = 0;
-        boolean validar = false;
-        
-        while (!validar) {
-            try {
-                num1 = Integer.parseInt(JOptionPane.showInputDialog("Introduce un numero:"));
-                validar = true;
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Introduce un numero valido");
-            }
-        }
-        
-        while (!validar) {
-            try {
-                num2 = Integer.parseInt(JOptionPane.showInputDialog("Introduce otro numero:"));
-                validar = true;
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Introduce un numero valido");
-            }
-        }
+        int num1 = validarNumEntero("Introduce el primer numero:");
+        int num2 = validarNumEntero("Introduce el segundo numero:");
 
         System.out.println("Suma: " + (num1 + num2));
         System.out.println("Resta: " + (num1 - num2));
@@ -74,20 +87,9 @@ public class EjerciciosIniciales {
      * Usa la constante PI y el método pow de Math 
     */
     public static void ejercicio5 () {
-        double radio = 0.0, area;
-        boolean validar = false;
+        double radio = validarNumDouble("Introduce el radio del círculo:");      
+        double area = Math.PI * Math.pow(radio, 2);
         
-        while (!validar) {
-            try {
-                radio = Double.parseDouble(JOptionPane.showInputDialog("Introduce el radio del círculo:"));
-                validar = true;
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Introduce un numero valido");
-            }
-        }
-        
-        area = Math.PI * Math.pow(radio, 2);
         System.out.println(String.format("El área del círculo es: %.2f", area));
     }
     
@@ -97,20 +99,10 @@ public class EjerciciosIniciales {
     */
     public static void ejercicio7 () {
         final double IVA = 0.21;
-        double precio = 0.0, precioFinal;
-        boolean validar = false;
 
-        while (!validar) {
-            try {
-                precio = Double.parseDouble(JOptionPane.showInputDialog("Introduce el precio del producto:"));
-                validar = true;
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Introduce un numero valido");
-            }
-        }
-        
-        precioFinal = precio + (precio * IVA);
+        double precio = validarNumDouble("Introduce el precio del producto:");
+        double precioFinal = precio + (precio * IVA);
+
         System.out.println(String.format("El precio final es: %.2f", precioFinal));
     }
     
@@ -129,36 +121,15 @@ public class EjerciciosIniciales {
      * Al final mostrara la suma de todas las ventas 
     */
     public static void ejercicio12 () {
-        int numVentas = 0, sumaVentas = 0;
-        boolean validar = false;
-        
-        while (!validar) {
-            try {
-                numVentas = Integer.parseInt(JOptionPane.showInputDialog("Introduce el numero de ventas:"));
-                validar = true;
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Introduce un numero valido");
-            }
-        }
+        int numVentas = validarNumEntero("Introduce el numero de ventas:");
+        int sumaVentas = 0, venta;
         
         for (int i = 0; i < numVentas; i++) {
-            validar = false;
-            
-            while (!validar) {
-                try {
-                    int venta = Integer.parseInt(JOptionPane.showInputDialog("Introduce la venta " + (i + 1) + ":"));
-                    
-                    sumaVentas += venta;
-                    validar = true;
-                }
-                catch (NumberFormatException e) {
-                    System.out.println("Introduce un numero valido");
-                }
-            }
+            venta = validarNumEntero("Introduce la venta " + (i + 1) + ":");
+            sumaVentas += venta;
         }
-            
-        System.out.println("La suma total de las ventas es: " + sumaVentas); 
+        
+         System.out.println("La suma total de las ventas es: " + sumaVentas);
     }
     
     /**
@@ -167,26 +138,24 @@ public class EjerciciosIniciales {
      * Para la raíz cuadrada usa el método sqlrt de Math. Te recomiendo que uses mensajes de traza. 
     */
     public static void ejercicio13 () {
-        try {
-            double a = Double.parseDouble(JOptionPane.showInputDialog("Introduce el valor de a:"));
-            double b = Double.parseDouble(JOptionPane.showInputDialog("Introduce el valor de b:"));
-            double c = Double.parseDouble(JOptionPane.showInputDialog("Introduce el valor de c:"));
-            
-            double discriminante = Math.pow(b, 2) - 4 * a * c;
-            
-            if (discriminante < 0) {
-                System.out.println("La ecuación no tiene soluciones reales");
-            }
-            else {
-                double x1 = (-b + Math.sqrt(discriminante)) / (2 * a);
-                double x2 = (-b - Math.sqrt(discriminante)) / (2 * a);
-                
-                System.out.println("Solución x1: " + x1);
-                System.out.println("Solución x2: " + x2);
-            }
+       double discriminante; 
+       
+       double a = validarNumDouble("Introduce el valor de a:");
+       double b = validarNumDouble("Introduce el valor de b:");
+       double c = validarNumDouble("Introduce el valor de c:");
+       
+       discriminante = Math.pow(b, 2) - 4 * a * c;
+       System.out.println("Discriminante: " + discriminante);
+       
+        if (discriminante < 0) {
+            System.out.println("No tiene valor real");
         }
-        catch (NumberFormatException e) {
-            System.out.println("Introduce un numero");
+        else {
+            double x1 = (-b + Math.sqrt(discriminante)) / (2 * a);
+            double x2 = (-b - Math.sqrt(discriminante)) / (2 * a);
+            
+            System.out.println("x1: " + x1);
+            System.out.println("x2: " + x2);
         }
     }
     
@@ -198,15 +167,10 @@ public class EjerciciosIniciales {
        int numero = 0;
 
         while (numero <= 0) {
-            try {
-                numero = Integer.parseInt(JOptionPane.showInputDialog("Introduce un número mayor o igual que cero:"));
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Introduce un numero");
-            }
+            numero = validarNumEntero("Introduce un numero mayor o igual que cero:");
         }
 
-        System.out.println("El número introducido es: " + numero);
+        System.out.println("El numero introducido es: " + numero);
     }
     
     /**
@@ -216,7 +180,7 @@ public class EjerciciosIniciales {
      * Piensa bien en la condición de salida (3 intentos y si acierta sale, aunque le queden intentos). 
     */
     public static void ejercicio15() {
-        String contrasenaCorrecta = "1234";
+        final String CONTRASENACORRECTA = "1234";
         String contrasena;
         int intentos = 3;
         boolean acertado = false;
@@ -224,7 +188,7 @@ public class EjerciciosIniciales {
         while (intentos > 0 && !acertado) {
             contrasena = JOptionPane.showInputDialog("Introduce la contraseña:");
             
-            if (contrasena.equals(contrasenaCorrecta)) {
+            if (contrasena.equals(CONTRASENACORRECTA)) {
                 System.out.println("Enhorabuena");
                 acertado = true;
             }
@@ -244,17 +208,12 @@ public class EjerciciosIniciales {
      * Si el día no se reconoce, mostrar el mensaje ?Día incorrecto?. Usa un switch para ello.             
     */
     public static void ejercicio16() {
-        try {
-            int dia = Integer.parseInt(JOptionPane.showInputDialog("Introduce el dia de la semana (numerico):"));
+        int dia = validarNumEntero("Introduce el dia de la semana (numerico):");
 
-            switch (dia) {
-                case 1, 2, 3, 4, 5 -> System.out.println("Es laboral");
-                case 6, 7 -> System.out.println("No es laboral");
-                default -> System.out.println("Día incorrecto");
-            }
-        }
-        catch (NumberFormatException e) {
-            System.out.println("Introduce un numero");
+        switch (dia) {
+            case 1, 2, 3, 4, 5 -> System.out.println("Es laboral");
+            case 6, 7 -> System.out.println("No es laboral");
+            default -> System.out.println("Día incorrecto");
         }
     }
     
@@ -263,48 +222,43 @@ public class EjerciciosIniciales {
      * y devolver el resultado de la operación, utilizando un switch 
     */
     public static void ejercicio17() {
-        try {
-            int resultado = 0;
-            int num1 = Integer.parseInt(JOptionPane.showInputDialog("Introduce el primer número:"));
-            int num2 = Integer.parseInt(JOptionPane.showInputDialog("Introduce el segundo número:"));
-            char operacion;
-            boolean operacionValida = false;
+        char operacion;
+        int resultado = 0;
+        int num1 = validarNumEntero("Introduce el primer número:");
+        int num2 = validarNumEntero("Introduce el segundo número:");
+        boolean operacionValida = false;
+            
+        while (!operacionValida) {
+            operacion = JOptionPane.showInputDialog("Introduce la operacion a realizar (+, -, *, /):").charAt(0);
 
-            while (!operacionValida) {
-                operacion = JOptionPane.showInputDialog("Introduce la operación a realizar (+, -, *, /):").charAt(0);
-
-                switch (operacion) {
-                    case '+':
-                        resultado = num1 + num2;
+            switch (operacion) {
+                case '+':
+                    resultado = num1 + num2;
+                    operacionValida = true;
+                    break;
+                case '-':
+                    resultado = num1 - num2;
+                    operacionValida = true;
+                    break;
+                case '*':
+                    resultado = num1 * num2;
+                    operacionValida = true;
+                    break;
+                case '/':
+                    if (num2 == 0) {
+                        System.out.println("No se puede dividir entre 0");
+                    }
+                    else {
+                        resultado = num1 / num2;
                         operacionValida = true;
-                        break;
-                    case '-':
-                        resultado = num1 - num2;
-                        operacionValida = true;
-                        break;
-                    case '*':
-                        resultado = num1 * num2;
-                        operacionValida = true;
-                        break;
-                    case '/':
-                        if (num2 == 0) {
-                            System.out.println("No se puede dividir entre 0");
-                        }
-                        else {
-                            resultado = num1 / num2;
-                            operacionValida = true;
-                        }
-                        break;
-                    default:
-                        System.out.println("Opción incorrecta");
-                }
+                    }
+                    break;
+                default:
+                    System.out.println("Opcion incorrecta");
             }
+        }
 
-            System.out.println(resultado);
-        }
-        catch (NumberFormatException e) {
-            System.out.println("Introduce un numero");
-        }
+        System.out.println(resultado);
     }
     
     /**
@@ -314,22 +268,18 @@ public class EjerciciosIniciales {
     public static void ejercicio18() {
         Random random = new Random();
         int numeroAleatorio = random.nextInt(10) + 1;
-        int intentos = 0;
+        int intentos = 0, numeroUsuario;
         boolean acertado = false;
-
+        
         while (!acertado) {
-            try {
-                 int numeroUsuario = Integer.parseInt(JOptionPane.showInputDialog("Introduce un número entre 1 y 10:"));
-                intentos++;
-
-                if (numeroUsuario == numeroAleatorio) {
-                    System.out.println("¡Eureka!");
-                    System.out.println("Intentos: " + intentos);
-                    acertado = true;
-                }
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Introduce un numero");
+            intentos++;
+            
+            numeroUsuario = validarNumEntero("Introduce un número entre 1 y 10:");
+           
+            if (numeroUsuario == numeroAleatorio) {
+                System.out.println("¡Eureka!");
+                System.out.println("Intentos: " + intentos);
+                acertado = true;
             }
         }
     }
@@ -344,24 +294,20 @@ public class EjerciciosIniciales {
         boolean acertado = false;
         int intentos = 0;
         int numeroAleatorio;
+        String respuesta;
         
-        System.out.println("Piensa en un número entre 1 y 10");
+        System.out.println("Piensa en un numero entre 1 y 10");
 
         while (!acertado) {
-            try {
-                numeroAleatorio = random.nextInt(10) + 1;
-                intentos++;
+            intentos++;
+            numeroAleatorio = random.nextInt(10) + 1;
 
-                String respuesta = JOptionPane.showInputDialog("¿Es " + numeroAleatorio + "? (s/n)");
+            respuesta = JOptionPane.showInputDialog("Es " + numeroAleatorio + "? (s/n)");
 
-                if (respuesta.equalsIgnoreCase("s")) {
-                    System.out.println("¡Eureka!");
-                    System.out.println("Intentos: " + intentos);
-                    acertado = true;
-                }
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Introduce un numero");
+            if (respuesta.equalsIgnoreCase("s")) {
+                System.out.println("¡Eureka!");
+                System.out.println("Intentos: " + intentos);
+                acertado = true;
             }
         }
     }
@@ -371,25 +317,19 @@ public class EjerciciosIniciales {
      * cuente el número de números positivos, el número de números negativos y realice la suma de todos ellos 
     */
     public static void ejercicio20() {
-        int numero = 0, positivos = 0, negativos = 0, suma = 0;
+        int positivos = 0, negativos = 0, suma = 0, numero;
 
         for (int i = 0; i < 10; i++) {
-            try {
-                numero = Integer.parseInt(JOptionPane.showInputDialog("Introduce un numero " + (i + 1) + ":"));
-                
-                if (numero > 0) {
-                    positivos++;
-                }
-                else if (numero < 0) {
-                    negativos++;
-                }
-                
-                suma += numero;
+            numero = validarNumEntero("Introduce un numero " + (i + 1) + ":");
+            
+            if (numero > 0) {
+                positivos++;
             }
-            catch (NumberFormatException e) {
-                System.out.println("Introduce un numero");
-                i--;
+            else if (numero < 0) {
+                negativos++;
             }
+            
+            suma += numero;
         }
         
         System.out.println("Numeros positivos: " + positivos);
@@ -401,17 +341,12 @@ public class EjerciciosIniciales {
      * Escribir un programa en Java que lea un número entero por el teclado e imprima todos los números impares menores que él
     */
     public static void ejercicio21() {
-        try {
-            int numero = Integer.parseInt(JOptionPane.showInputDialog("Introduce un número entero:"));
-            
-            for (int i = 1; i < numero; i++) {
-                if (i % 2 != 0) {
-                    System.out.println(i);
-                }
+        int numero = validarNumEntero("Introduce un numero entero:");
+        
+        for (int i = 1; i < numero; i++) {
+            if (i % 2 != 0) {
+                System.out.println(i);
             }
-        }
-        catch (NumberFormatException e) {
-            System.out.println("Introduce un numero");
         }
     }
     
@@ -425,7 +360,7 @@ public class EjerciciosIniciales {
         String numeroCuenta = "";
 
         while (numeroCuenta.length() != 20) {
-            numeroCuenta = JOptionPane.showInputDialog("Introduce un número de cuenta de 20 dígitos:");
+            numeroCuenta = JOptionPane.showInputDialog("Introduce un numero de cuenta de 20 dígitos:");
         }
 
         String codigoBanco = numeroCuenta.substring(0, 4);
@@ -441,90 +376,81 @@ public class EjerciciosIniciales {
     
     /**
      * Pedir números al usuario y cuando el usuario meta un -1 se terminará el programa. Al terminar, mostrará lo siguiente:
-     *  ? mayor numero introducido
-     *  ? menor numero introducido
-     *  ? suma de todos los numeros
-     *  ? suma de los numeros positivos
-     *  ? suma de los numeros negativos
+     *  - mayor numero introducido
+     *  - menor numero introducido
+     *  - suma de todos los numeros
+     *  - suma de los numeros positivos
+     *  - suma de los numeros negativos
      *  
      *   El número -1 no contara para ningún cálculo, únicamente para terminar el programa
     */
     public static void ejercicio23() {
-        int numero;
-        int mayor = Integer.MIN_VALUE;
-        int menor = Integer.MAX_VALUE;
-        int sumaTotal = 0;
-        int sumaPositivos = 0;
-        int sumaNegativos = 0;
+        int mayor = 0, menor = 0, sumaTotal = 0, sumaPositivos = 0, sumaNegativos = 0;
         boolean continuar = true;
-
+        
         while (continuar) {
-            try {
-                numero = Integer.parseInt(JOptionPane.showInputDialog("Introduce un numero (-1 para terminar):"));
+            int numero = validarNumEntero("Introduce un numero (-1 para terminar):");
 
-                if (numero == -1) {
-                    continuar = false;
+            if (numero == -1) {
+                continuar = false;
+            }
+            else {
+                if (numero > mayor) {
+                    mayor = numero;
+                }
+                
+                if (numero < menor) {
+                    menor = numero;
+                }
+ 
+                sumaTotal += numero;
+ 
+                if (numero > 0) {
+                    sumaPositivos += numero;
                 }
                 else {
-                    if (numero > mayor) {
-                        mayor = numero;
-                    }
-
-                    if (numero < menor) {
-                        menor = numero;
-                    }
-
-                    sumaTotal += numero;
-
-                    if (numero > 0) {
-                        sumaPositivos += numero;
-                    }
-                    else {
-                        sumaNegativos += numero;
-                    }
+                    sumaNegativos += numero;
                 }
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Introduce un numero");
             }
         }
         
-        System.out.println("Numero mayor introducido " + mayor);
-        System.out.println("Numero menor introducido " + menor);
-        System.out.println("Suma de todos los numeros es " + sumaTotal);
-        System.out.println("Suma de los numeros positivos es " + sumaPositivos);
-        System.out.println("Suma de los numeros negativos es " + sumaNegativos);
+        System.out.println("Numero mayor introducido: " + mayor);
+        System.out.println("Numero menor introducido: " + menor);
+        System.out.println("Suma de todos los numeros: " + sumaTotal);
+        System.out.println("Suma positivos: " + sumaPositivos);
+        System.out.println("Suma negativos: " + sumaNegativos);
     }
     
     /**
      * Pide un número por teclado e imprime todos los números primos que existen entre 1 el número introducido
     */
     public static void ejercicio24() {
-        try {
-            int numero = Integer.parseInt(JOptionPane.showInputDialog("Introduce un número:"));
+        int numero = validarNumEntero("Introduce un numero:");
         
-            for (int i = 2; i <= numero; i++) {
-                if (esPrimo(i)) {
-                    System.out.println(i);
-                }
+        for (int i = 2; i <= numero; i++) {
+            if (esPrimo(i)) {
+                System.out.println(i);
             }
-        }
-        catch (NumberFormatException e) {
-            System.out.println("Introduce un numero");
         }
     }
     
+    
     /**
-     * Le pasas un numero y de devuelve si es primo o no
+     * Verifica si un número es primo.
+     * 
      * @param numero
      * @return boolean
-    */
+     */
     public static boolean esPrimo(int numero) {
-        if (numero <= 1) {
-            return false;
+        if (numero == 2) {
+            return true;
         }
         
-        for (int i = 2; i <= Math.sqrt(numero); i++) {
+        if (numero <= 1 || (numero != 2 && numero % 2 == 0)) {
+            return false;
+        }
+
+        for (int i = 3; i <= Math.sqrt(numero); i += 2) {
             if (numero % i == 0) {
                 return false;
             }
