@@ -14,7 +14,7 @@ public class EjerciciosIniciales {
         //ejercicio5();
         //ejercicio7();
         //ejercicio11();
-        //ejercicio12();
+        ejercicio12();
         //ejercicio13();
         //ejercicio14();
         //ejercicio15();
@@ -26,46 +26,69 @@ public class EjerciciosIniciales {
         //ejercicio21();
         //ejercicio22();
         //ejercicio23();
-        ejercicio24();
+        //ejercicio24();
     }
     
     /**
      * Pide al usuario dos variables numéricas, muestra por consola la suma, resta, multiplicación, división y módulo (resto de la división)
     */
-    public static void ejercicio1 () {
-        try {
-            int num1 = Integer.parseInt(JOptionPane.showInputDialog("Introduce un número:"));
-            int num2 = Integer.parseInt(JOptionPane.showInputDialog("Introduce un número:"));
+    public static void ejercicio1 () {        
+        int num1 = 0, num2 = 0;
+        boolean validar = false;
+        
+        while (!validar) {
+            try {
+                num1 = Integer.parseInt(JOptionPane.showInputDialog("Introduce un numero:"));
+                validar = true;
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Introduce un numero valido");
+            }
+        }
+        
+        while (!validar) {
+            try {
+                num2 = Integer.parseInt(JOptionPane.showInputDialog("Introduce otro numero:"));
+                validar = true;
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Introduce un numero valido");
+            }
+        }
 
-            System.out.println("Suma: " + (num1 + num2));
-            System.out.println("Resta: " + (num1 - num2));
-            System.out.println("Multiplicación: " + (num1 * num2));
-            System.out.println("División: " + (num1 / num2));
-            System.out.println("Módulo: " + (num1 % num2));
+        System.out.println("Suma: " + (num1 + num2));
+        System.out.println("Resta: " + (num1 - num2));
+        System.out.println("Multiplicacion: " + (num1 * num2));
+
+        if (num2 != 0) {
+            System.out.println("Vivision: " + (num1 / num2));
+            System.out.println("Modulo: " + (num1 % num2));
         }
-        catch (NumberFormatException e) {
-            System.out.println("Introduce un numero");
+        else {
+            System.out.println("No se puede dividir entre 0");
         }
-        catch (ArithmeticException e) {
-            System.out.println("Error en la division");
-        }
-    }
-    
+    }    
     /**
      * Haz una aplicación que calcule el área de un círculo(pi*R2). 
      * El radio se pedirá por teclado (recuerda que necesitamos un dato de tipo double). 
      * Usa la constante PI y el método pow de Math 
     */
     public static void ejercicio5 () {
-        try {
-            double radio = Double.parseDouble(JOptionPane.showInputDialog("Introduce el radio del círculo:"));
-            double area = Math.PI * Math.pow(radio, 2);
-
-            System.out.println(String.format("El área del círculo es: %.2f", area));
+        double radio = 0.0, area;
+        boolean validar = false;
+        
+        while (!validar) {
+            try {
+                radio = Double.parseDouble(JOptionPane.showInputDialog("Introduce el radio del círculo:"));
+                validar = true;
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Introduce un numero valido");
+            }
         }
-        catch (NumberFormatException e) {
-            System.out.println("Introduce un numero");
-        }
+        
+        area = Math.PI * Math.pow(radio, 2);
+        System.out.println(String.format("El área del círculo es: %.2f", area));
     }
     
     /**
@@ -74,16 +97,21 @@ public class EjerciciosIniciales {
     */
     public static void ejercicio7 () {
         final double IVA = 0.21;
+        double precio = 0.0, precioFinal;
+        boolean validar = false;
+
+        while (!validar) {
+            try {
+                precio = Double.parseDouble(JOptionPane.showInputDialog("Introduce el precio del producto:"));
+                validar = true;
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Introduce un numero valido");
+            }
+        }
         
-        try {
-            double precio = Double.parseDouble(JOptionPane.showInputDialog("Introduce el precio del producto:"));
-            double precioFinal = precio + (precio * IVA);
-            
-             System.out.println(String.format("El precio final con IVA es: %.2f", precioFinal));
-        }
-        catch (NumberFormatException e) {
-            System.out.println("Introduce un numero");
-        }
+        precioFinal = precio + (precio * IVA);
+        System.out.println(String.format("El precio final es: %.2f", precioFinal));
     }
     
     /**
@@ -101,21 +129,36 @@ public class EjerciciosIniciales {
      * Al final mostrara la suma de todas las ventas 
     */
     public static void ejercicio12 () {
-        try {
-            int sumaVentas = 0;
-            
-            int numVentas = Integer.parseInt(JOptionPane.showInputDialog("Introduce el número de ventas:"));
-            
-            for (int i = 0; i < numVentas; i++) {
-                int venta = Integer.parseInt(JOptionPane.showInputDialog("Introduce la venta " + (i + 1) + ":")); 
-                sumaVentas += venta;
+        int numVentas = 0, sumaVentas = 0;
+        boolean validar = false;
+        
+        while (!validar) {
+            try {
+                numVentas = Integer.parseInt(JOptionPane.showInputDialog("Introduce el numero de ventas:"));
+                validar = true;
             }
+            catch (NumberFormatException e) {
+                System.out.println("Introduce un numero valido");
+            }
+        }
+        
+        for (int i = 0; i < numVentas; i++) {
+            validar = false;
             
-            System.out.println("La suma total de las ventas es: " + sumaVentas); 
+            while (!validar) {
+                try {
+                    int venta = Integer.parseInt(JOptionPane.showInputDialog("Introduce la venta " + (i + 1) + ":"));
+                    
+                    sumaVentas += venta;
+                    validar = true;
+                }
+                catch (NumberFormatException e) {
+                    System.out.println("Introduce un numero valido");
+                }
+            }
         }
-        catch (NumberFormatException e) {
-            System.out.println("Introduce un numero");
-        }
+            
+        System.out.println("La suma total de las ventas es: " + sumaVentas); 
     }
     
     /**
@@ -174,7 +217,7 @@ public class EjerciciosIniciales {
     */
     public static void ejercicio15() {
         String contrasenaCorrecta = "1234";
-        String contrasena = "";
+        String contrasena;
         int intentos = 3;
         boolean acertado = false;
 
@@ -246,7 +289,8 @@ public class EjerciciosIniciales {
                     case '/':
                         if (num2 == 0) {
                             System.out.println("No se puede dividir entre 0");
-                        } else {
+                        }
+                        else {
                             resultado = num1 / num2;
                             operacionValida = true;
                         }
