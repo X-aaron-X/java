@@ -57,8 +57,8 @@ public class EjerciciosIniciales {
         //ejercicio20();
         //ejercicio21();
         //ejercicio22();
-        ejercicio23();
-        //ejercicio24();
+        //ejercicio23();
+        ejercicio24();
     }
     
     /**
