@@ -395,22 +395,13 @@ public class EjerciciosIniciales {
                 continuar = false;
             }
             else {
-                if (numero > mayor) {
-                    mayor = numero;
-                }
-                
-                if (numero < menor) {
-                    menor = numero;
-                }
+                mayor = (numero > mayor) ? numero : mayor;
+                menor = (numero < menor) ? numero : menor;
  
                 sumaTotal += numero;
- 
-                if (numero > 0) {
-                    sumaPositivos += numero;
-                }
-                else {
-                    sumaNegativos += numero;
-                }
+                
+                sumaPositivos += (numero > 0) ? numero : 0;
+                sumaNegativos += (numero <= 0) ? numero : 0;
             }
         }
         

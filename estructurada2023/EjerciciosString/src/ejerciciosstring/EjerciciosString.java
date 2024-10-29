@@ -80,51 +80,33 @@ public class EjerciciosString {
     private static String generarContrasena(int longitud, int mayusculas, int minusculas, int numeros) {
         String contrasena = "";
         boolean segura = false;
+        int aleatorio;
+        char caracter;
+        Random random = new Random();
+        
         String caracteresNum = "0123456789";
         String caracteresString = "abcdefghijklmnñopqrstuvwxyz";
-        Random random = new Random();
         
         String todosCaracteres = caracteresNum + caracteresString + caracteresString.toUpperCase(); 
         
         while (!segura) {
-            contrasena = "";
+            int contadorMayusculas = 0, contadorMinusculas = 0, contadorNumeros = 0;
+            contrasena = ""; 
             
             for (int i = 0; i < longitud; i++) {
-                int aleatorio = random.nextInt(todosCaracteres.length());
+                aleatorio = random.nextInt(todosCaracteres.length());
 
-                char caracter = todosCaracteres.charAt(aleatorio);       
+                caracter = todosCaracteres.charAt(aleatorio);       
                 contrasena += caracter;
+                
+                if (Character.isUpperCase(caracter)) contadorMayusculas++;
+                else if (Character.isLowerCase(caracter)) contadorMinusculas++;
+                else if (Character.isDigit(caracter)) contadorNumeros++;
             }
-        
-            segura = comprobarSeguridad(contrasena, mayusculas, minusculas, numeros);
+
+            segura = (contadorMayusculas >= mayusculas && contadorMinusculas >= minusculas && contadorNumeros >= numeros);
         }
         
         return contrasena;
-    }
-    
-    /**
-     * Comprobamos si la contraseña si cumple los requisitos para la contraseña segura
-     * @param contrasena
-     * @param mayusculas
-     * @param minusculas
-     * @param numeros
-     * @return boolean
-    */
-    private static boolean comprobarSeguridad(String contrasena, int mayusculas, int minusculas, int numeros) {
-        int contadorMayusculas = 0; int contadorMinusculas = 0; int contadorNumeros = 0;
-        
-        for (char caracter : contrasena.toCharArray()) {
-            if (Character.isUpperCase(caracter)) {
-                contadorMayusculas++;
-            }
-            else if (Character.isLowerCase(caracter)) {
-                contadorMinusculas++;
-            }
-            else if (Character.isDigit(caracter)) {
-                contadorNumeros++;
-            }
-        }
-        
-        return (contadorMayusculas >= mayusculas && contadorMinusculas >= minusculas && contadorNumeros >= numeros);
     }
 }
