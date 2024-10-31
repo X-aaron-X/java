@@ -38,7 +38,7 @@ public class ConectaCuatro {
     }
     
     /**
-     * Inicializa el tablero del juego con los símbolos vacios
+     * Inicializa el tablero del juego con los simbolos vacios
     */
     private static void comenzarPartida() {
         tablero = new char[FILAS][COLUMNAS];
@@ -54,11 +54,11 @@ public class ConectaCuatro {
      * Pinta en la consola el tablero
     */
     private static void imprimeTablero() {
-        System.out.println("Tablero de Conecta Cuatro:");
+        System.out.println("Tablero Conecta Cuatro:");
 
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
-                System.out.print("   " + tablero[i][j]);
+                System.out.print(tablero[i][j] + "   ");
             }
 
             System.out.println();
@@ -81,20 +81,18 @@ public class ConectaCuatro {
     }
     
     /**
-     * Pinta el símbolo del jugador en la primera posición vacia
+     * Pinta el simbolo del jugador en la primera posicion vacia
      * @param columna -> La columna que pasa el usuario donde se colocara el simbolo del jugador
     */
     public static void escribirDatoUsuario(int columna) {
         int fila = FILAS - 1;
         
-        // Busca la primera posicion vacia de abajo hacia arriba
+        // Busca la primera posicion vacia desde abajo
         while (fila >= 0 && tablero[fila][columna - 1] != SIMBOLOVACIO) {
             fila--;
         }
         
-        if (fila >= 0) {
-            tablero[fila][columna - 1] = simboloJugador;
-        }
+        tablero[fila][columna - 1] = simboloJugador;
     }
     
     /**
@@ -153,7 +151,7 @@ public class ConectaCuatro {
     }
     
     /**
-     * Comprueba si hay cuatro símbolos iguales en una fila
+     * Comprueba si hay cuatro simbolos iguales en una fila
      * 
      * @param fila -> Fila introducida por el usuario
      * @param simbolo -> Simbolo del jugador
@@ -172,7 +170,7 @@ public class ConectaCuatro {
     }
     
     /**
-     * Comprueba si hay cuatro símbolos iguales en una columna
+     * Comprueba si hay cuatro simbolos iguales en una columna
      * 
      * @param columna -> Columna introducida por el usuario
      * @param simbolo -> Simbolo del jugador
@@ -191,16 +189,14 @@ public class ConectaCuatro {
     }
     
     /**
-    * Comprueba si hay un ganador en las diagonales.
+    * Comprueba si hay un ganador en las diagonales
     * 
-    * @return boolean - true si hay un ganador.
+    * @return boolean - true si hay un ganador
     */
     public static boolean comprobarDiagonales() {
         // Diagonal izquierda
         for (int i = 0; i <= FILAS - 4; i++) {
             for (int j = 0; j <= COLUMNAS - 4; j++) {
-                // Comprobamos que el simbolo actual no sea el de una casilla vacía
-                // Y que los siguientes tres elementos en diagonal sean iguales
                 if (tablero[i][j] != SIMBOLOVACIO && 
                     tablero[i][j] == tablero[i + 1][j + 1] && 
                     tablero[i][j] == tablero[i + 2][j + 2] && 
@@ -214,8 +210,6 @@ public class ConectaCuatro {
         // Diagonal derecha
         for (int i = 3; i < FILAS; i++) {
             for (int j = 0; j <= COLUMNAS - 4; j++) {
-                // Comprobamos que el simbolo actual no sea el de una casilla vacía
-                // Y que los siguientes tres elementos en diagonal sean iguales
                 if (tablero[i][j] != SIMBOLOVACIO && 
                     tablero[i][j] == tablero[i - 1][j + 1] && 
                     tablero[i][j] == tablero[i - 2][j + 2] && 
