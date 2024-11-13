@@ -22,7 +22,7 @@ public class GuardarPassFichero {
                 case 2 -> buscarContrasena();
                 case 3 -> limpiarFichero();
                 case 4 -> System.out.println("Adios");
-                default -> JOptionPane.showMessageDialog(null, "Opción incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
+                default -> JOptionPane.showMessageDialog(null, "Opcion incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         while (opcion != 4);
